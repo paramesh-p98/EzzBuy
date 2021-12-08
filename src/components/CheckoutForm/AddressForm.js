@@ -57,7 +57,8 @@ const AddressForm = ({ checkoutToken }) => {
         <>
             <Typography variant="h6" gutterBottom>Shipping Address</Typography>
             <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit((data) => ())}>
+                {/* <form onSubmit={methods.handleSubmit((data) => ())}> */}
+                <form onSubmit=''>
                     <Grid container spacing={3}>
                         <FormInput required name='firstName' label='First Name' />
                         <FormInput required name='lastName' label='Last Name' />
@@ -77,7 +78,7 @@ const AddressForm = ({ checkoutToken }) => {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <InputLabel> Shipping Subdivisions</InputLabel>
-                            <Select value={shippingSubdivision} fullWidth onChange={(e) => shippingSubdivision(e.target.value)}>
+                            <Select value={shippingSubdivision} fullWidth onChange={(e) => setShippingSubdivision(e.target.value)}>
                                 {subdivisions.map((subdivision) => (
                                     <MenuItem key={subdivision.id} value={subdivision.id}>
                                         {subdivision.label}
@@ -87,7 +88,7 @@ const AddressForm = ({ checkoutToken }) => {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <InputLabel> Shipping Options</InputLabel>
-                            <Select value={shippingOption} fullWidth onChange={(e) => shippingSubdivision(e.target.value)}>
+                            <Select value={shippingOption} fullWidth onChange={(e) => setShippingOption(e.target.value)}>
                                 {options.map((option) => (
                                     <MenuItem key={option.id} value={option.id}>
                                         {option.label}
