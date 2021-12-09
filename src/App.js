@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 const App = () => {
     const [products, setProducts] = useState([]);            //React-Hooks - state management
     const [cart, setCart] = useState({});
+    const [order, setOrder] = useState({});
+    const [errorMessage, setErrorMessage] = useState('');
 
     const fetchProducts = async () => {
         const { data } = await commerce.products.list();    //fetch from commerce.js check commerce docs 
@@ -37,6 +39,24 @@ const App = () => {
         setCart(cart);
     };
 
+    const refreshCart = async () => {
+        const newCart = await commerce.cart.refresh();
+        setCart(newCart);
+    }
+
+    const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+        console.log("inside handleCaptureCheckout");
+        try {
+            const incomingorder = await commerce.checkout.capture(checkoutTokenId, newOrder);
+            console.log(incomingorder);
+            setOrder(incomingorder);
+            refreshCart();
+        } catch (error) {
+            console.log("log Error = ", error);
+            setErrorMessage("Error= ", error.data.error.message);
+        }
+    };
+
 
     useEffect(() => {
         fetchProducts();
@@ -49,7 +69,11 @@ const App = () => {
             <div>
                 <Navbar totalItems={cart.total_items} />
                 <Routes>
-                    <Route path="/" element={<Products products={products} onAddToCart={handleAddToCart} />}></Route>
+                    <Route path="/"
+                        element={
+                            <Products products={products} onAddToCart={handleAddToCart} />
+                        }>
+                    </Route>
                     <Route path="/cart"
                         element={
                             <Cart cart={cart}
@@ -59,7 +83,11 @@ const App = () => {
                             />
                         }>
                     </Route>
-                    <Route path="/checkout" element={<Checkout cart={cart} />}></Route>
+                    <Route path="/checkout"
+                        element={
+                            <Checkout cart={cart} order={order} onCaptureCheckout={handleCaptureCheckout} error={errorMessage} />
+                        }>
+                    </Route>
                 </Routes>
             </div>
         </Router >

@@ -6,7 +6,7 @@ import { commerce } from '../../lib/commerce'
 
 import FormInput from './CustomTextField'
 
-const AddressForm = ({ checkoutToken }) => {
+const AddressForm = ({ checkoutToken, next }) => {
     const [shippingCountries, setShippingCountries] = useState([]);
     const [shippingCountry, setShippingCountry] = useState('');
     const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
@@ -41,15 +41,18 @@ const AddressForm = ({ checkoutToken }) => {
 
 
     useEffect(() => {
-        fetchShippingCountries(checkoutToken?.id)
+        let isMounted = true;
+        fetchShippingCountries(checkoutToken.id)
+        return () => { isMounted = false };
     }, []);
 
     useEffect(() => {
-        if (shippingCountry) fetchSubdivisions(shippingCountry)
+        let isMounted = true;
+        if (isMounted && shippingCountry) fetchSubdivisions(shippingCountry)
     }, [shippingCountry]);
 
     useEffect(() => {
-        if (shippingSubdivision) fetchshippingOptions(checkoutToken?.id, shippingCountry, shippingSubdivision)
+        if (shippingSubdivision) fetchshippingOptions(checkoutToken.id, shippingCountry, shippingSubdivision)
     }, [shippingSubdivision]);
 
 
@@ -57,8 +60,7 @@ const AddressForm = ({ checkoutToken }) => {
         <>
             <Typography variant="h6" gutterBottom>Shipping Address</Typography>
             <FormProvider {...methods}>
-                {/* <form onSubmit={methods.handleSubmit((data) => ())}> */}
-                <form onSubmit=''>
+                <form onSubmit={methods.handleSubmit((data) => next({ ...data, shippingCountry, shippingSubdivision, shippingOption }))}>
                     <Grid container spacing={3}>
                         <FormInput required name='firstName' label='First Name' />
                         <FormInput required name='lastName' label='Last Name' />
