@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button, Link } from '@material-ui/core';
+import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core';
+import { Link } from 'react-router-dom'
 import { commerce } from '../../../lib/commerce';
 
 import useStyles from './styles'
