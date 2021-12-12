@@ -15,6 +15,7 @@ const PaymentForm = ({ checkoutToken, shippingData, backStep, onCaptureCheckout,
 
         if (!stripe || !elements) return;
         const cardElement = elements.getElement(CardElement);
+        // eslint-disable-next-line no-unused-vars
         const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card: cardElement });
 
         if (error) {

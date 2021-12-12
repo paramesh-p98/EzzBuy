@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { InputLabel, Select, MenuItem, Button, Grid, Typography, } from '@material-ui/core';
-import { useForm, FormProvider, useFormContext } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { Link } from 'react-router-dom'
 import { commerce } from '../../lib/commerce'
 
@@ -41,9 +41,11 @@ const AddressForm = ({ checkoutToken, next }) => {
 
 
     useEffect(() => {
+        // eslint-disable-next-line no-unused-vars
         let isMounted = true;
         fetchShippingCountries(checkoutToken.id)
         return () => { isMounted = false };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -53,6 +55,7 @@ const AddressForm = ({ checkoutToken, next }) => {
 
     useEffect(() => {
         if (shippingSubdivision) fetchshippingOptions(checkoutToken.id, shippingCountry, shippingSubdivision)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shippingSubdivision]);
 
 
